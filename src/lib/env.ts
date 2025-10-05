@@ -11,6 +11,7 @@ export const env = createEnv({
     GITHUB_CLIENT_SECRET: z.string().min(5),
     GOOGLE_CLIENT_ID: z.string().min(5),
     GOOGLE_CLIENT_SECRET: z.string().min(5),
+    RESEND_API_KEY: z.string().min(5),
   },
   client: {
     NEXT_PUBLIC_BASE_URL: z.url(), // Public values safe for client

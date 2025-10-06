@@ -17,7 +17,7 @@ const redis =
   globalForRedis.redis ||
   new Redis(env.REDIS_URL, {
     // Auto-enable TLS for secure URLs (rediss://)
-    tls: process.env.REDIS_URL?.startsWith("rediss://") ? {} : undefined,
+    tls: env.REDIS_URL?.startsWith("rediss://") ? {} : undefined,
     maxRetriesPerRequest: 3,
     reconnectOnError: (err) => {
       const targetErrors = ["READONLY", "ETIMEDOUT", "ECONNRESET"];

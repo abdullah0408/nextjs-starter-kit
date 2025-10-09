@@ -9,50 +9,36 @@ import {
   Text,
 } from "@react-email/components";
 
-interface WelcomeEmailProps {
-  userName?: string;
-  dashboardUrl?: string;
+interface EmailVerificationEmailProps {
+  verificationUrl: string;
 }
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
 
-export const WelcomeEmail = ({
-  userName = "there",
-  dashboardUrl = `${baseUrl}/dashboard`,
-}: WelcomeEmailProps) => (
+export const EmailVerificationEmail = ({
+  verificationUrl,
+}: EmailVerificationEmailProps) => (
   <Html>
     <Head />
     <Body style={main}>
-      <Preview>Welcome to NextJS Starter Kit!</Preview>
+      <Preview>Verify your email address</Preview>
       <Container style={container}>
-        <Heading style={h1}>Welcome to NextJS Starter Kit!</Heading>
-        <Text style={text}>Hi {userName},</Text>
-        <Text style={text}>
-          Welcome to NextJS Starter Kit! We&apos;re excited to have you on
-          board. You&apos;ve successfully created your account and are now ready
-          to start building amazing web applications.
-        </Text>
-        <Text style={{ ...text, marginBottom: "14px" }}>
-          Here&apos;s what you can do next:
-        </Text>
-        <Text style={listItem}>
-          • Explore the pre-built components and UI elements
-        </Text>
-        <Text style={listItem}>• Set up your authentication preferences</Text>
-        <Text style={listItem}>• Customize your project settings</Text>
-        <Text style={listItem}>• Start building your first feature</Text>
+        <Heading style={h1}>Verify Your Email</Heading>
         <Link
-          href={dashboardUrl}
+          href={verificationUrl}
           target="_blank"
           style={{
             ...link,
             display: "block",
-            marginTop: "24px",
             marginBottom: "16px",
           }}
         >
-          Get started with your dashboard
+          Click here to verify your email address
         </Link>
+        <Text style={{ ...text, marginBottom: "14px" }}>
+          Or, copy and paste this verification URL:
+        </Text>
+        <Text style={url}>{verificationUrl}</Text>
         <Text
           style={{
             ...text,
@@ -61,8 +47,8 @@ export const WelcomeEmail = ({
             marginBottom: "16px",
           }}
         >
-          Need help getting started? Check out our documentation or reach out to
-          our support team.
+          If you didn&apos;t create an account, you can safely ignore this
+          email.
         </Text>
         <Text
           style={{
@@ -72,7 +58,7 @@ export const WelcomeEmail = ({
             marginBottom: "38px",
           }}
         >
-          Happy coding! We can&apos;t wait to see what you&apos;ll build.
+          Welcome to NextJS Starter Kit! Start building your next project.
         </Text>
         {/* <Img
           src={`${baseUrl}/logo.png`}
@@ -97,12 +83,11 @@ export const WelcomeEmail = ({
   </Html>
 );
 
-WelcomeEmail.PreviewProps = {
-  userName: "John Doe",
-  dashboardUrl: "https://example.com/dashboard",
-} as WelcomeEmailProps;
+EmailVerificationEmail.PreviewProps = {
+  verificationUrl: "https://example.com/verify?token=abc123",
+} as EmailVerificationEmailProps;
 
-export default WelcomeEmail;
+export default EmailVerificationEmail;
 
 const main = {
   backgroundColor: "#ffffff",
@@ -140,13 +125,16 @@ const text = {
   margin: "24px 0",
 };
 
-const listItem = {
+const url = {
+  display: "inline-block",
+  padding: "16px 4.5%",
+  width: "90.5%",
+  backgroundColor: "#f4f4f4",
+  borderRadius: "5px",
+  border: "1px solid #eee",
   color: "#333",
-  fontFamily:
-    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+  fontFamily: "monospace",
   fontSize: "14px",
-  margin: "8px 0",
-  paddingLeft: "16px",
 };
 
 const footer = {

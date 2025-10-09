@@ -7,7 +7,7 @@ const emailRecipientsSchema = z.union([
   z.array(emailStringSchema).min(1, "At least one recipient is required"),
 ]);
 
-const fromEmailSchema = z.string().refine(
+export const fromEmailSchema = z.string().refine(
   (val) => {
     const simpleEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (simpleEmailRegex.test(val)) {

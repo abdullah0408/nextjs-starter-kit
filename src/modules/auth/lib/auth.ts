@@ -1,7 +1,13 @@
-import { betterAuth } from "better-auth";
-import { prismaAdapter } from "better-auth/adapters/prisma";
+import {
+  EmailVerificationEmail,
+  ResetPasswordEmail,
+  WelcomeEmail,
+} from "@/components/email-templates";
+import { sendEmail } from "@/lib/email";
 import { env } from "@/lib/env";
 import prisma from "@/lib/prisma";
+import { betterAuth } from "better-auth";
+import { prismaAdapter } from "better-auth/adapters/prisma";
 
 /**
  * Better Auth configuration for this Next.js app.
@@ -14,6 +20,36 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    async sendResetPassword({ user, url }) {
+      await sendEmail({
+        from: env.NEXT_PUBLIC_EMAIL_FROM,
+        to: user.email,
+        subject: "Reset your password",
+        react: ResetPasswordEmail({ resetUrl: url }),
+      });
+    },
+  },
+  emailVerification: {
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+    async sendVerificationEmail({ user, url }) {
+      await sendEmail({
+        from: env.NEXT_PUBLIC_EMAIL_FROM,
+        to: user.email,
+        subject: "Verify your email address",
+        react: EmailVerificationEmail({ verificationUrl: url }),
+      });
+    },
+    async afterEmailVerification(user) {
+      await sendEmail({
+        from: env.NEXT_PUBLIC_EMAIL_FROM,
+        to: user.email,
+        subject: "Welcome to NextJS Starter Kit!",
+        react: WelcomeEmail({
+          userName: user.name || user.email.split("@")[0],
+        }),
+      });
+    },
   },
 
   /**

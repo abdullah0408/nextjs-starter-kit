@@ -1,3 +1,4 @@
+import { fromEmailSchema } from "@/schemas";
 import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 
@@ -16,11 +17,13 @@ export const env = createEnv({
   },
   client: {
     NEXT_PUBLIC_BASE_URL: z.url(), // Public values safe for client
+    NEXT_PUBLIC_EMAIL_FROM: fromEmailSchema,
   },
   // Use experimental__runtimeEnv for client-side values that are only available at runtime,
   // e.g., dynamic URLs or keys that are not known at build time.
   // This is needed if your client env vars might change between builds and must be read from process.env at runtime.
   experimental__runtimeEnv: {
     NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
+    NEXT_PUBLIC_EMAIL_FROM: process.env.NEXT_PUBLIC_EMAIL_FROM,
   },
 });

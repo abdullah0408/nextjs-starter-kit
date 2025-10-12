@@ -3,9 +3,11 @@
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { authClient } from "@/modules/auth/lib/auth-client";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState, type ComponentProps } from "react";
 import { toast } from "sonner";
+import { useTRPC } from "@/trpc/client";
 
 type ButtonBaseProps = ComponentProps<typeof Button>;
 
@@ -21,6 +23,9 @@ export default function SignOutButton({
 }: SignOutButtonProps) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const trpc = useTRPC();
+
+  const queryClient = useQueryClient();
 
   async function handleSignOut() {
     setLoading(true);
@@ -34,6 +39,7 @@ export default function SignOutButton({
       return;
     }
 
+    queryClient.invalidateQueries(trpc.auth.getMe.queryOptions());
     toast.success("Signed out successfully");
     onSignedOut?.();
     router.push("/auth/sign-in");
